@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-springbootrestapiexample2
+spec:
+  selector:
+    app: deployment-springbootrestapiexample2
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 1234
+      nodePort: 31471
+      targetPort: 8081
+      protocol: TCP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-springbootrestapiexample2
+spec:
+  selector:
+    matchLabels:
+      run: deployment-springbootrestapiexample2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: deployment-springbootrestapiexample2
+        app: deployment-springbootrestapiexample2
+    spec:
+      containers:
+        - name: springbootrestapiexample
+          image: localhost:5000/springbootrestapiexample2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+
